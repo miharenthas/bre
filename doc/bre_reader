@@ -1,0 +1,16 @@
+BRE reader documentation.
+
+This collection of functions is thought to read R3B branches from the TFiles (TTrees) where the are stored and put them in identically organized STL containers. So far, this STL container is a nested std::vector, templated with one of the data types defined in bre_data_types.h.
+
+All the members of this (tiny) toolkit are contained int the namespace BRE
+
+The reader function is "read_branch", and it is a three-way overload:
+-- for the Rattleplane: it takes in the storage nested std::vector, a pointer to the TTree and optionally the rattleplane's own index.
+-- for the MCTracks: it takes in just the storage nested std::vector and a pointer to the TTree.
+-- for the detector hits: like the MCTracks, plus a const char* with the name of the target branch. So far, "TOFPoint" and "DCHPoint" are supported.
+
+The Makefile instructs the compilation of the code into a library, libbre.a, that can be dynamically linked. It is found in $PROGS_HOME/lib.
+
+NOTE: more extensive documentation will follow. Until then, the code has been commented and that should at least give an idea of how it works and, more importantly, how to use it.
+
+NOTE: more detectors and sofisticated stuff will probably be supported later. Now it's a race against the clock, so only minimal functionality is provided.
