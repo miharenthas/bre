@@ -14,7 +14,7 @@ ROOT_FLAGS = `root-config --cflags`
 ROOT_FLAGS += -L $(SIMPATH)/lib -L $(FAIRROOTPATH)/lib -I $(SIMPATH)/include -I $(FAIRROOTPATH)/include
 CXX_FLAGS = -std=c++11 -I $(INCLUDE_D) -ggdb -fPIC
 
-OBJECTS = bre_reader.o bre_stitch.o
+OBJECTS = bre_reader.o bre_stitch.o bre_data_types.o
 LIBS = libbre.a
 TEST_PRG = test_reader
 
@@ -25,6 +25,9 @@ bre_reader.o :
 
 bre_stitch.o :
 	$(CXX) $(SRC_D)/bre_stitch.cc $(CXX_FLAGS) $(ROOT_FLAGS) -c -o $(BIN_D)/bre_stitch.o
+
+bre_data_types.o:
+	$(CXX) $(SRC_D)/bre_data_types.cc $(CXX_FLAGS) $(ROOT_FLAGS) -c -o $(BIN_D)/bre_data_types.o
 
 #-------------------------------------------------------------------------------------
 #library
@@ -43,4 +46,4 @@ all: $(OBJECTS) $(LIBS)
 
 .PHONY: clean
 clean:
-	rm -rf $(BIN_D)/*
+	rm -rf $(BIN_D)/*.o $(LIB_D)/*.a

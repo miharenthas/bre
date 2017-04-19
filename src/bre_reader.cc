@@ -31,8 +31,10 @@ namespace BRE{
 			br->GetEntry( evt );
 			for( int i=0; i < arr.GetEntriesFast(); ++i ){
 				p_elem = (R3BMCTrack*)arr[i];
-				t_buf.trk_id = i; //it seems that the index is
+				t_buf.own_id = i; //it seems that the index is
 				                  //the track number here
+				t_buf.parent_id = p_elem->GetMotherId();
+				t_buf.pdg = p_elem->GetPdgCode();
 				t_buf.mass = p_elem->GetMass();
 				
 				data[evt].push_back( t_buf );
@@ -105,6 +107,7 @@ namespace BRE{
 		char class_name[64];
 		if( strstr( branch_name, "DCH" ) ) strcpy( class_name, "R3BDchPoint" );
 		else if( strstr( branch_name, "TOF" ) ) strcpy( class_name, "R3BTofPoint" );
+		else return 0;
 		TClonesArray arr( class_name, 16384 ), *p_arr;
 		p_arr = &arr;
 		

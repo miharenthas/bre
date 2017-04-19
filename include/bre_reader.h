@@ -5,7 +5,6 @@
 #define BRE_READER__H
 
 #include <vector>
-#include <exception>
 #include <string.h>
 #include <stdio.h>
 
@@ -24,29 +23,6 @@
 #include "bre_data_types.h"
 
 namespace BRE{
-	//the error structure...
-	class bre_err : public std::exception {
-		public:
-			bre_err( const char *message ){
-				if( strlen( message ) < 128 )
-					strcpy( _what, message );
-				else
-					strncpy( _what, message, 128 );
-			};
-			bre_err( const bre_err &given ){ strcpy( _what, given._what ); };
-			bre_err &operator=( bre_err &right ){
-				strcpy( _what, right._what );
-				return *this;
-			}
-		
-			~bre_err(){};
-		
-			const char *what() const noexcept{ return _what; };
-		private:
-			char _what[128];
-	};
-		
-
 	//the function is a four-way overload
 	//the return value is always an integer with the
 	//number of entries read (kinda redundant, but OK)
