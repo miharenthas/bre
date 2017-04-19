@@ -54,7 +54,7 @@ namespace BRE{
 		sprintf( b_name, "Rattles_%06x", number );
 		TBranch *br = the_tree->GetBranch( b_name );
 		if( br == NULL ){
-			throw bre_err( "MCTrack branch not found!" );
+			throw bre_err( "Rattles branch not found!" );
 		}
 		
 		//Ok, we have a branch, allocate the TClonesArray things

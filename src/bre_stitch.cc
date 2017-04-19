@@ -15,11 +15,12 @@ namespace BRE{
 		                                   //_not_ as trk.
 	
 		for( int i=0; i < rh.size(); ++i ){
+			if( rh[i].trk_id < 0 ) continue; //not gonna happen
 			try{
 				pts[i].trk = trk.at( rh[i].trk_id ); //this will throw if out of range
 			}catch( std::exception e ){
 				char e_mess[64];
-				sprintf( e_mess, "MCTrack for trak ID %d not found!", i );
+				sprintf( e_mess, "MCTrack for track ID %d not found!", rh[i].trk_id );
 				throw bre_err( e_mess );
 			}
 			d2r( pts[i].dh ) = rh[i];
@@ -40,11 +41,12 @@ namespace BRE{
 		                                   //_not_ as trk.
 	
 		for( int i=0; i < dh.size(); ++i ){
+			if( dh[i].trk_id < 0 ) continue; //not gonna happen
 			try{
 				pts[i].trk = trk.at( dh[i].trk_id ); //this will throw if out of range
 			}catch( std::exception e ){
 				char e_mess[64];
-				sprintf( e_mess, "MCTrack for trak ID %d not found!", i );
+				sprintf( e_mess, "MCTrack for track ID %d not found!", dh[i].trk_id );
 				throw bre_err( e_mess );
 			}
 			pts[i].dh = dh[i];
