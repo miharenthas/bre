@@ -34,7 +34,7 @@ libbre.a : $(OBJECTS)
 #-------------------------------------------------------------------------------------
 #test programs
 test_reader :
-	$(CXX) test/test_reader.cpp $(BIN_D)/bre_reader.o $(CXX_FLAGS) $(ROOT_FLAGS) $(ROOT_LIBS) -o test/test_reader
+	$(CXX) test/test_reader.cpp -L $(PROGS_HOME)/lib -lbre $(CXX_FLAGS) $(ROOT_FLAGS) $(ROOT_LIBS) -o test/test_reader
 
 #-------------------------------------------------------------------------------------
 #phony
