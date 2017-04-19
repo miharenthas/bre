@@ -56,9 +56,9 @@ namespace BRE{
 	//      it will be converted in the correct name into the function.
 	//      obviously, it won't work with older randomly generated names for
 	//      the rattle hits, but they shouldn't be around nevertheless.
-	int read_branch( std::vector<std::vector<rhit>> &data, TTree *the_tree, int number=0 );
-	int read_branch( std::vector<std::vector<mctrk>> &data, TTree *the_tree );
-	int read_branch( std::vector<std::vector<bre_detector_hit>> &data,
+	int read_branch( std::vector< std::vector<rhit> > &data, TTree *the_tree, int number=0 );
+	int read_branch( std::vector< std::vector<mctrk> > &data, TTree *the_tree );
+	int read_branch( std::vector< std::vector<bre_detector_hit> > &data,
 	                 TTree *the_tree,
 	                 const char *branch_name );
 }

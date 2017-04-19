@@ -4,7 +4,7 @@
 namespace BRE{
 	//----------------------------------------------------------------------------
 	//the MCTrack overload
-	int read_branch( std::vector<std::vector<mctrk>> &data, TTree *the_tree ){
+	int read_branch( std::vector< std::vector<mctrk> > &data, TTree *the_tree ){
 		//test if the branch "MCTrach" exists in the tree
 		//if not, throw an exception
 		TBranch *br = the_tree->GetBranch( "MCTrack" );
@@ -45,7 +45,7 @@ namespace BRE{
 	
 	//-----------------------------------------------------------------------------
 	//the rattle hits reader
-	int read_branch( std::vector<std::vector<rhit>> &data, TTree *the_tree, int number ){
+	int read_branch( std::vector< std::vector<rhit> > &data, TTree *the_tree, int number ){
 		//test if the branch "MCTrack" exists in the tree
 		//if not, throw an exception
 		char b_name[64];
@@ -91,7 +91,7 @@ namespace BRE{
 	
 	//----------------------------------------------------------------------------
 	//detector branches
-	int read_branch( std::vector<std::vector<bre_detector_hit>> &data,
+	int read_branch( std::vector< std::vector<bre_detector_hit> > &data,
 	                   TTree *the_tree,
 	                   const char *branch_name ){
 		//test if the branch "MCTrach" exists in the tree
