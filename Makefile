@@ -16,6 +16,7 @@ CXX_FLAGS = -std=c++11 -I $(INCLUDE_D) -ggdb -fPIC
 
 OBJECTS = bre_reader.o bre_stitch.o bre_data_types.o bre_phyltree.o
 LIBS = libbre.a
+PROGRAMS = rattlecat
 TEST_PRG = test_reader
 
 #-------------------------------------------------------------------------------------
@@ -38,6 +39,11 @@ libbre.a : $(OBJECTS)
 	$(CXX) $(BIN_D)/*.o $(CXX_FLAGS) $(ROOT_FLAGS) $(ROOT_LIBS) -shared -o $(LIB_D)/libbre.a
 
 #-------------------------------------------------------------------------------------
+#programs
+rattlecat : $(LIBS)
+	$(CXX) $(SRC_D)/rattlecat.cpp $(CXX_FLAGS) $(ROOT_FLAGS) $(ROOT_LIBS) -L $(LIB_D) -lbre -o rattlecat
+
+#-------------------------------------------------------------------------------------
 #test programs
 test_bre :
 	$(CXX) test/test_bre.cpp -L $(PROGS_HOME)/lib -lbre $(CXX_FLAGS) $(ROOT_FLAGS) $(ROOT_LIBS) -o test/test_bre
@@ -45,7 +51,7 @@ test_bre :
 #-------------------------------------------------------------------------------------
 #phony
 .PHONY: all
-all: $(OBJECTS) $(LIBS)
+all: $(OBJECTS) $(LIBS) $(PROGRAMS)
 
 .PHONY: clean
 clean:

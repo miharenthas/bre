@@ -1,5 +1,6 @@
 //implementation of the point reconstruction
 #include "bre_stitch.h"
+#include <stdio.h>
 
 namespace BRE{
 	//NOTE: these two function will do exactly the same job. The only actual
@@ -15,9 +16,9 @@ namespace BRE{
 		                                   //_not_ as trk.
 	
 		for( int i=0; i < rh.size(); ++i ){
-			if( rh[i].trk_id < 0 ) continue; //not gonna happen
 			try{
-				pts[i].trk = trk.at( rh[i].trk_id ); //this will throw if out of range
+				//this will throw if out of range
+				if( rh[i].trk_id >= 0 ) pts[i].trk = trk.at( rh[i].trk_id );
 			}catch( std::exception e ){
 				char e_mess[64];
 				sprintf( e_mess, "MCTrack for track ID %d not found!", rh[i].trk_id );
@@ -41,9 +42,9 @@ namespace BRE{
 		                                   //_not_ as trk.
 	
 		for( int i=0; i < dh.size(); ++i ){
-			if( dh[i].trk_id < 0 ) continue; //not gonna happen
 			try{
-				pts[i].trk = trk.at( dh[i].trk_id ); //this will throw if out of range
+				//this will throw if out of range
+				if( dh[i].trk_id >= 0 ) pts[i].trk = trk.at( dh[i].trk_id );
 			}catch( std::exception e ){
 				char e_mess[64];
 				sprintf( e_mess, "MCTrack for track ID %d not found!", dh[i].trk_id );

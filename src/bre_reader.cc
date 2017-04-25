@@ -78,6 +78,7 @@ namespace BRE{
 				//fill the buffer
 				p_elem = (R3BRPHit*)arr[i];
 				t_buf.trk_id = p_elem->GetTrackID();
+				t_buf.own_pdg = p_elem->_pdg;
 				t_buf.poe_x = p_elem->_poe.X();
 				t_buf.poe_y = p_elem->_poe.Y();
 				t_buf.poe_z = p_elem->_poe.Z();

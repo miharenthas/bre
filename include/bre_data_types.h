@@ -20,6 +20,7 @@ namespace BRE {
 	//      copied into one another (very dirty).
 	typedef struct bre_rattle_hit {
 		int trk_id; //track id
+		int own_pdg; //another PDG save
 		double poe_x; //point-of-entry X
 		double poe_y; //Y
 		double poe_z; //and Z
@@ -39,7 +40,9 @@ namespace BRE {
 	//hold the data of a detector hit
 	//relevat to Paulina's reconstruction
 	struct bre_detector_hit {
-		int trk_id; //the track id
+		long int trk_id; //the track id
+		                 //NOTE: it's long to maintain
+		                 //      compatibility with rhit
 		double p_x; //3-momentum
 		double p_y;
 		double p_z;
