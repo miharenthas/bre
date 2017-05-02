@@ -2,7 +2,7 @@
 %or a bunch of files
 %
 % [ ang_centroid, ang_min, ang_max ] = abeam_do( data, energy,
-%                                                det_placement, mag_ctr )
+%                                                det_placement, mag_ctr, cutoff )
 %
 % parameters:
 %     data: a cell array full of data (a cell per file)
@@ -15,7 +15,7 @@
 %     ang_max: the maximum benging angle of each beam energy (see above)
 
 function [ang_centroid, ang_min, ang_max] = abeam_do( data, energy, ...
-                                                      det_placement, mag_ctr )
+                                                      det_placement, mag_ctr, cutoff )
 	%do input checking
 	%... (coming soon)
 	if length( data ) == length( energy )
@@ -33,23 +33,30 @@ function [ang_centroid, ang_min, ang_max] = abeam_do( data, energy, ...
 	for ii = 1:n_pts
 		%correct the data to get the detector coordinates
 		%and most importantly apply a cut on random junk
-		%far away from the beam.
-		[data_c(ii), trfs(ii)] = abeam_corr( data{ii}, det_placement(ii,1), ...
-		                         det_placement(ii,2:4) );
-		while isempty( data_c{ii} )
-			cutoff = 50;
-			warning( ['No particles wiithin ', num2str(cutoff), 'cm of centroid' ] );
-			cutoff *=10;
+		%far away from the beam (optionally).
+		if nargin == 5
 			[data_c(ii), trfs(ii)] = abeam_corr( data{ii}, det_placement(ii,1), ...
 		                                 det_placement(ii,2:4), cutoff );
+			while sum( size( data_c{ii} ) ) < 9 %less than three particles
+				warning( ['No particles wiithin ', ...
+				         num2str(cutoff), 'cm of centroid' ] );
+				cutoff +=50;
+				[data_c(ii), trfs(ii)] = abeam_corr( data{ii}, det_placement(ii,1), ...
+				                         det_placement(ii,2:4), cutoff );
+			end
+		else
+			[data_c(ii), trfs(ii)] = abeam_corr( data{ii}, det_placement(ii,1), ...
+		                                 det_placement(ii,2:4) );
+		        if sum( size( data_c{ii} ) ) < 9; error( "Empty particle set" ); end
 		end
+		
 		%get the three sigma contours and centroid of the data
 		[ctr, tsc] = abeam_mcov( data_c{ii} );
 		
 		%save the stuff
 		centroids = [centroids; ctr];
 		tscontours = [tscontours; tsc];
-		zees.( num2str( energy(ii) ) ) = mean( data_c{ii} )(3) +5;
+		zees.( num2str( energy(ii) ) ) = mean( data_c{ii} )(3);
 	end
 	
 	%do the interpolation now
@@ -63,8 +70,17 @@ function [ang_centroid, ang_min, ang_max] = abeam_do( data, energy, ...
 		                                        %three sigma contour
 		%append the Z coordinate (not interpolated)
 		zz = zees.( num2str( energy( find( energy <= ee )(end) ) ) );
-		i_tsc = [i_tsc, zz*ones( length( i_tsc ), 1 )];
+		i_tsc = [i_tsc, zz*ones( size( i_tsc, 1 ), 1 )];
 		ctr = [ctr, zz];
+		
+		%retransform
+		i_trf = inv( trfs{find( energy <= ee )(end)} )'; %find the transofrmation
+		                                                 %and invert it
+		%and then apply it (note that it's affine).
+		i_tsc = [i_tsc, ones( size( i_tsc, 1 ), 1 )]*i_trf;
+		i_tsc = i_tsc(:,1:3);
+		ctr = [ctr, 1]*i_trf;
+		ctr = ctr(:,1:3);
 		
 		%find the angles
 		ctr = abeam_angular( mag_ctr, ctr );

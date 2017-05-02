@@ -21,15 +21,15 @@ function [ub_corr, trf] = abeam_corr( ub_orig, ang, transl, cutoff )
 	trf = inv( trf ); %invert it
 	
 	%correct in the affine space
-	ub_corr = [ub_orig, ones( length( ub_orig ), 1 )]*trf';
+	ub_corr = [ub_orig, ones( size( ub_orig, 1 ), 1 )]*trf';
 	ub_corr = ub_corr(:,1:3);
 
 	%a little cleanup is in order
 	%to eliminate stray events
 	%select all the events in a 50 cm circle within the centroid
-	if nargin == 3
+	if nargin == 4
 		cutoff = 50;
+		centroid = mean( ub_corr(:,[1 2]) );
+		ub_corr = ub_corr( find( sum( (ub_corr(:,[1 2] ) - centroid).^2, 2 ) <= cutoff^2 ), : );
 	end
-	centroid = mean( ub_corr(:,[1 2]) );
-	ub_corr = ub_corr( find( sum( (ub_corr(:,[1 2] ) - centroid).^2, 2 ) <= cutoff^2 ), : );
 end
