@@ -1,6 +1,6 @@
-%tiny script(ish) to get the tracking information out of a bunch of files.
+%tiny script(ish) to get the tracking information out of a bunch of files, in slices.
 %
-% [ centroid_trk, tscountour_trk ] = abeam_track( data, det_placement, cutoff )
+% [ centroid_trk, tscountour_trk ] = abeam_track_slice( data, det_placement, cutoff )
 %
 % parameters:
 %     data: a cell array full of data (a cell per file)
@@ -11,9 +11,10 @@
 %     centroid_trk: the track of the centroid, cell
 %     tscontour_trk: the track of the three-sigma contour, cell
 %
-%NOTE: this code is a derivative of abeam_do.
+%NOTE: this code is a derivative of abeam_do. And it's probably overkill
+%      here, since I am not interpolating. But it'll do.
 
-function [ centroid_trk, tscontour_trk ] = abeam_track( data, det_placement, cutoff )
+function [ centroid_trk, tscontour_trk ] = abeam_track_slice( data, det_placement, cutoff )
 	%do input checking
 	%... (coming soon)
 	if length( data ) == size( det_placement, 1 )
