@@ -28,7 +28,6 @@ function [ub_corr, trf] = abeam_corr( ub_orig, ang, transl, cutoff )
 	%to eliminate stray events
 	%select all the events in a 50 cm circle within the centroid
 	if nargin == 4
-		cutoff = 50;
 		centroid = mean( ub_corr(:,[1 2]) );
 		ub_corr = ub_corr( find( sum( (ub_corr(:,[1 2] ) - centroid).^2, 2 ) <= cutoff^2 ), : );
 	end

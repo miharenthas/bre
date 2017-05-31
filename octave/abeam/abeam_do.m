@@ -7,6 +7,8 @@
 % parameters:
 %     data: a cell array full of data (a cell per file)
 %     energy: the energy each file has been generated at
+%     det_placement: the detector placement, it's a matrix with an entry for each
+%                    file.
 %     mag_ctr: the coodrdinates of the magnet's centre
 % output:
 %     ang_centroid: the centroid of the beams (angle from the centre of the magnet)
