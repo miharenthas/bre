@@ -14,7 +14,7 @@
 %NOTE: this code is a derivative of abeam_do. And it's probably overkill
 %      here, since I am not interpolating. But it'll do.
 
-function [ centroid_trk, tscontour_trk ] = abeam_track_slice( data, det_placement, cutoff )
+function [ centroid_trk, tscontour_trk ] = abeam_track_slices( data, det_placement, cutoff )
 	%do input checking
 	%... (coming soon)
 	if length( data ) == size( det_placement, 1 )
