@@ -12,11 +12,12 @@ ROOT_LIBS += $(FAIR_LIBS)
 ROOT_LIBS += $(R3B_LIBS)
 ROOT_FLAGS = `root-config --cflags`
 ROOT_FLAGS += -L $(SIMPATH)/lib -L $(FAIRROOTPATH)/lib -I $(SIMPATH)/include -I $(FAIRROOTPATH)/include
-CXX_FLAGS = -std=c++11 -I $(INCLUDE_D) -ggdb -fPIC
+CXX_FLAGS = -std=c++11 -I $(INCLUDE_D) -ggdb -fPIC -fopenmp
+GSL_LIBS = -lgsl -lm -lgslcblas
 
-OBJECTS = bre_reader.o bre_stitch.o bre_data_types.o bre_phyltree.o
+OBJECTS = bre_reader.o bre_stitch.o bre_data_types.o bre_phyltree.o bre_geo_basic.o
 LIBS = libbre.a
-PROGRAMS = rattlecat
+PROGRAMS = rattlecat geocat
 TEST_PRG = test_reader
 
 #-------------------------------------------------------------------------------------
@@ -25,23 +26,29 @@ bre_reader.o :
 	$(CXX) $(SRC_D)/bre_reader.cc $(CXX_FLAGS) $(ROOT_FLAGS) -c -o $(BIN_D)/bre_reader.o
 
 bre_stitch.o :
-	$(CXX) $(SRC_D)/bre_stitch.cc $(CXX_FLAGS) $(ROOT_FLAGS) -c -o $(BIN_D)/bre_stitch.o
+	$(CXX) $(SRC_D)/bre_stitch.cc $(CXX_FLAGS) -c -o $(BIN_D)/bre_stitch.o
 
 bre_data_types.o:
-	$(CXX) $(SRC_D)/bre_data_types.cc $(CXX_FLAGS) $(ROOT_FLAGS) -c -o $(BIN_D)/bre_data_types.o
+	$(CXX) $(SRC_D)/bre_data_types.cc $(CXX_FLAGS) -c -o $(BIN_D)/bre_data_types.o
 
 bre_phyltree.o:
-	$(CXX) $(SRC_D)/bre_phyltree.cc $(CXX_FLAGS) $(ROOT_FLAGS) -c -o $(BIN_D)/bre_phyltree.o
+	$(CXX) $(SRC_D)/bre_phyltree.cc $(CXX_FLAGS) -c -o $(BIN_D)/bre_phyltree.o
+
+bre_geo_basic.o:
+	$(CXX) $(SRC_D)/bre_geo_basic.cc $(CXX_FLAGS) -c -o $(BIN_D)/bre_geo_basic.o
 
 #-------------------------------------------------------------------------------------
 #library
 libbre.a : $(OBJECTS)
-	$(CXX) $(BIN_D)/*.o $(CXX_FLAGS) $(ROOT_FLAGS) $(ROOT_LIBS) -shared -o $(LIB_D)/libbre.a
+	$(CXX) $(BIN_D)/*.o $(CXX_FLAGS) $(ROOT_FLAGS) $(ROOT_LIBS) $(GSL_LIBS) -shared -o $(LIB_D)/libbre.a
 
 #-------------------------------------------------------------------------------------
 #programs
 rattlecat : $(LIBS)
-	$(CXX) $(SRC_D)/rattlecat.cpp $(CXX_FLAGS) $(ROOT_FLAGS) $(ROOT_LIBS) -L $(LIB_D) -lbre -o rattlecat
+	$(CXX) $(SRC_D)/rattlecat.cpp $(CXX_FLAGS) $(ROOT_FLAGS) $(ROOT_LIBS) $(GSL_LIBS) -L $(LIB_D) -lbre -o rattlecat
+
+geocat : $(LIBS)
+	$(CXX) $(SRC_D)/geocat.cpp $(CXX_FLAGS) $(ROOT_FLAGS) $(ROOT_LIBS) $(GSL_LIBS) -L $(LIB_D) -lbre -o geocat
 
 #-------------------------------------------------------------------------------------
 #test programs

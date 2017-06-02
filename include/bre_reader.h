@@ -12,6 +12,7 @@
 #include "TClonesArray.h"
 #include "TTree.h"
 #include "TBranch.h"
+#include "TGeoTrack.h"
 
 //R3B specific includes
 #include "R3BMCTrack.h"
@@ -37,6 +38,7 @@ namespace BRE{
 	int read_branch( std::vector< std::vector<bre_detector_hit> > &data,
 	                 TTree *the_tree,
 	                 const char *branch_name );
+	int read_branch( std::vector< std::vector<bgeo> > &data, TTree *the_tree ); //Tracks
 }
 
 #endif

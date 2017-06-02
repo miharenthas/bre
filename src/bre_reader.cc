@@ -139,4 +139,54 @@ namespace BRE{
 		
 		return nb_elements;
 	}
+
+	//----------------------------------------------------------------------------
+	//This overload reads the TGeoTracks into the bgeo structure
+	int read_branch( std::vector< std::vector<bgeo> > &data, TTree *the_tree ){
+		//try to get hold of the TGeoTracks branch.
+		TBranch *br = the_tree->GetBranch( "GeoTracks" );
+		if( br == NULL ){
+			throw bre_err( "Branch not found!" );
+		}
+		
+		//We have the TGeoTracks branch. Let's read it.
+		TClonesArray arr( "TGeoTracks", 16384 ), *p_arr;
+		p_arr = &arr;
+		
+		//connect the branch
+		the_tree->SetBranchAddress( "GeoTracks", &p_arr );
+		
+		//prep the buffer
+		data.clear();
+		data.resize( the_tree->GetEntriesFast() );
+		int nb_elements = 0;
+		
+		//loop on the events
+		bgeo t_buf; //the track buffer.
+		bgeo_pt *pt_buf; //single point buffer, same size as double[4].
+		TGeoTrack *p_elem; //pointer to the current element
+		for( int evt=0; evt < the_tree->GetEntriesFast(); ++evt ){
+			br->GetEntry( evt );
+			//loop in event's members
+			for( int i=0; i < arr.GetEntriesFast(); ++i ){
+				p_elem = (TGeoTrack*)arr[i];
+				//if the track is empty, skip it
+				if( !p_elem->HasPoints() ) continue;
+				
+				//allocate the track buffer
+				t_buf.npts( p_elem->GetNpoints() );
+				t_buf.pdg = p_elem->GetPDG();
+				//loop on the track's point
+				for( int p=0; p < t_buf.npts(); ++p ){
+					pt_buf = (bgeo_pt*)p_elem->GetPoint( i );
+					t_buf.pts[p] = *pt_buf;
+				}
+				//add the thing to the data buffer
+				data[evt].push_back( t_buf );
+				++nb_elements;
+			}
+		}
+		
+		return nb_elements;
+	}
 }

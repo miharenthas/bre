@@ -3,6 +3,9 @@
 #ifndef BRE_DATA_TYPES__H
 #define BRE_DATA_TYPES__H
 
+#include <stdlib.h> //malloc, free
+#include <string.h> //memcpy
+
 #include <vector>
 #include <exception>
 #include <string.h>
@@ -85,6 +88,31 @@ namespace BRE {
 	} pphyl;
 	
 	//----------------------------------------------------------------------------
+	//a couple of data structure to hold basic geometry information
+	typedef struct bre_geometry_basci_point{
+		double x, y, z, t;
+	} bgeo_pt;
+	
+	//this has to be a class...
+	typedef class bre_geometry_basic_info{
+		public:
+			int pdg;
+			bgeo_pt *pts; //a buffer of points
+			
+			bre_geometry_basic_info();
+			bre_geometry_basic_info( const unsigned int nb_points );
+			bre_geometry_basic_info( const bre_geometry_basic_info &given );
+			~bre_geometry_basic_info();
+			
+			bre_geometry_basic_info &operator=( const bre_geometry_basic_info &right );
+			
+			unsigned int npts( const unsigned int sz );
+			unsigned int npts() const { return _npts; };
+		private:
+			unsigned int _npts;
+	} bgeo;
+
+	//----------------------------------------------------------------------------
 	//the error structure...
 	class bre_err : public std::exception {
 		public:
@@ -106,7 +134,7 @@ namespace BRE {
 		private:
 			char _what[128];
 	};
-	
+
 	//----------------------------------------------------------------------------
 	//inelegant type conversion
 	//NOTE: these function don't copy the data structures, but
@@ -115,7 +143,7 @@ namespace BRE {
 	//      but be careful fiddling about in the memory like this.
 	rhit &d2r( bre_detector_hit &given ); //detector hit to rattle hit
 	bre_detector_hit &r2d( rhit &given ); //rattle hit to detector hit
-}
+}	
 
 #endif
 		
