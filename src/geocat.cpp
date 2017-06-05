@@ -95,15 +95,15 @@ int main( int argc, char **argv ){
 				break;
 			case 'T':
 				transform = true;
-				sscanf( optarg, "[%f,%f,%f;%f,%f,%f;%f,%f,%f]",
-					trf->data[0], trf->data[1], trf->data[2],
-					trf->data[3], trf->data[4], trf->data[5],
-					trf->data[6], trf->data[7], trf->data[8] );
+				sscanf( optarg, "[%lf,%lf,%lf;%lf,%lf,%lf;%lf,%lf,%lf]",
+					&trf->data[0], &trf->data[1], &trf->data[2],
+					&trf->data[3], &trf->data[4], &trf->data[5],
+					&trf->data[6], &trf->data[7], &trf->data[8] );
 				break;
 			case 'l':
 				translate = true;
-				sscanf( optarg, "[%f,%f,%f]", trl->data[0],
-				        trl->data[1], trl->data[2] );
+				sscanf( optarg, "[%lf,%lf,%lf]", &trl->data[0],
+				        &trl->data[1], &trl->data[2] );
 				break;
 			case 'n':
 				max_tracks = (unsigned int)atoi( optarg );

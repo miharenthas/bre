@@ -89,7 +89,7 @@ namespace BRE {
 	
 	//----------------------------------------------------------------------------
 	//a couple of data structure to hold basic geometry information
-	typedef struct bre_geometry_basci_point{
+	typedef struct bre_geometry_basic_point{
 		double x, y, z, t;
 	} bgeo_pt;
 	

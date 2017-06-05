@@ -150,7 +150,7 @@ namespace BRE{
 		}
 		
 		//We have the TGeoTracks branch. Let's read it.
-		TClonesArray arr( "TGeoTracks", 16384 ), *p_arr;
+		TClonesArray arr( "TGeoTrack", 16384 ), *p_arr;
 		p_arr = &arr;
 		
 		//connect the branch
@@ -178,7 +178,7 @@ namespace BRE{
 				t_buf.pdg = p_elem->GetPDG();
 				//loop on the track's point
 				for( int p=0; p < t_buf.npts(); ++p ){
-					pt_buf = (bgeo_pt*)p_elem->GetPoint( i );
+					pt_buf = (bgeo_pt*)p_elem->GetPoint( p );
 					t_buf.pts[p] = *pt_buf;
 				}
 				//add the thing to the data buffer

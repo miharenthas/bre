@@ -11,7 +11,7 @@ namespace BRE{
 		int nb_removed = 0;
 		
 		//loop over the events
-		is_PDG pdg_ck( pdg );
+		is_not_PDG pdg_ck( pdg );
 		std::vector<bgeo>::iterator ends_here;
 		for( int evt=0; evt < geo_info.size(); ++evt ){
 			nb_removed += geo_info[evt].size();
@@ -45,11 +45,11 @@ namespace BRE{
 		#pragma omp for
 		for( int evt=0; evt < geo_info.size(); ++evt ){
 			for( int t=0; t < geo_info[evt].size(); ++t ){
-				for( int i=0; i < geo_info[evt][i].npts(); ++i ){
+				for( int i=0; i < geo_info[evt][t].npts(); ++i ){
 					vv_pt = gsl_vector_view_array( (double*)&geo_info[evt][t].pts[i], 3 );
 				
 					gsl_blas_dgemv( CblasNoTrans, 1, trf, &vv_pt.vector, 0, v_buf );
-				
+					
 					gsl_vector_memcpy( &vv_pt.vector, v_buf );
 				}
 			}

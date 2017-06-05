@@ -42,20 +42,20 @@ namespace BRE{
 	//some little support tools
 	
 	//a class to compare on PDG
-	class is_PDG : public std::unary_function<bgeo, bool> {
+	class is_not_PDG : public std::unary_function<bgeo, bool> {
 		public:
-			is_PDG(): _pdg( 0 ) {};
-			is_PDG( int pdg ): _pdg( pdg ) {};
-			is_PDG( is_PDG const &given ): _pdg( given._pdg ) {};
-			~is_PDG() {};
+			is_not_PDG(): _pdg( 0 ) {};
+			is_not_PDG( int pdg ): _pdg( pdg ) {};
+			is_not_PDG( is_not_PDG const &given ): _pdg( given._pdg ) {};
+			~is_not_PDG() {};
 			
-			bool operator()( const bgeo &given ) const { return _pdg == given.pdg; };
+			bool operator()( const bgeo &given ) const { return _pdg != given.pdg; };
 			
-			is_PDG &operator=( const is_PDG &right ){
+			is_not_PDG &operator=( const is_not_PDG &right ){
 				_pdg = right._pdg;
 				return *this;
 			};
-			is_PDG &operator=( const int right ){
+			is_not_PDG &operator=( const int right ){
 				_pdg = right;
 				return *this;
 			};
