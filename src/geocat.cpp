@@ -146,6 +146,10 @@ int main( int argc, char **argv ){
 		
 		//cat the vectors
 		geo_data.insert( geo_data.end(), geo_buf.begin(), geo_buf.end() );
+		
+		//cleanup (hopefully)
+		infile->Close();
+		infile->Delete();
 	}
 	//a little cleanup
 	geo_buf.clear();
