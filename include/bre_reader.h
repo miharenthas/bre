@@ -14,6 +14,9 @@
 #include "TBranch.h"
 #include "TGeoTrack.h"
 
+//Fair stuff
+#include "FairMCPoint.h"
+
 //R3B specific includes
 #include "R3BMCTrack.h"
 #include "R3BTofPoint.h"

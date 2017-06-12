@@ -106,8 +106,13 @@ namespace BRE{
 		
 		//Ok, we have a branch, allocate the TClonesArray things
 		char class_name[64];
+		bool has_pdg = false;
 		if( strstr( branch_name, "DCH" ) ) strcpy( class_name, "R3BDchPoint" );
 		else if( strstr( branch_name, "TOF" ) ) strcpy( class_name, "R3BTofPoint" );
+		else if( strstr( branch_name, "Rattles" ) ){
+			strcpy( class_name, "R3BRPHit" );
+			has_pdg = true;
+		}
 		else return 0;
 		TClonesArray arr( class_name, 16384 ), *p_arr;
 		p_arr = &arr;
@@ -122,12 +127,14 @@ namespace BRE{
 		
 		//loop on them
 		dchp t_buf; //track buffer
-		R3BDchPoint *p_elem; //element pointer
+		FairMCPoint *p_elem; //element pointer
+		int &pdg = *(((int*)&t_buf.trk_id)+1);
 		for( int evt=0; evt < the_tree->GetEntriesFast(); ++evt ){
 			br->GetEntry( evt );
 			for( int i=0; i < arr.GetEntriesFast(); ++i ){
-				p_elem = (R3BDchPoint*)arr[i];
+				p_elem = (FairMCPoint*)arr[i];
 				t_buf.trk_id = p_elem->GetTrackID();
+				if( has_pdg ) pdg = ((R3BRPHit*)p_elem)->_pdg;
 				t_buf.p_x = p_elem->GetPx();
 				t_buf.p_y = p_elem->GetPy();
 				t_buf.p_z = p_elem->GetPz();

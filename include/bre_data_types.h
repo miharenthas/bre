@@ -59,6 +59,7 @@ namespace BRE {
 	//      and the TOF wall, so it's just aliasing
 	typedef struct bre_detector_hit tofp; //TOF hit
 	typedef struct bre_detector_hit dchp; //DCH hit
+	typedef struct bre_detector_hit rhit_mom; //rattlehit with momentum.
 	
 	//The full relevant stuff of the event
 	typedef struct bre_full_point{
